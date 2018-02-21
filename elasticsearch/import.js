@@ -14,15 +14,11 @@ var nullifyEmptyValues = function(str) {
 }
 
 var createCall = function(data) {
-  var lat = nullifyEmptyValues(data["lat"]);
-  var lng = nullifyEmptyValues(data["lng"]);
-
+  const lat = nullifyEmptyValues(data["lat"]);
+  const lng = nullifyEmptyValues(data["lng"]);
+  var location = null;
   if (lat && lng) {
-    lat = parseFloat(lat);
-    lng = parseFloat(lng);
-  } else {
-    lat = null;
-    lng = null;
+    location = [parseFloat(lng), parseFloat(lat)];
   }
 
   var category = null;
@@ -33,8 +29,7 @@ var createCall = function(data) {
   }
 
   return {
-	"lat": lat,
-	"lng": lng,
+	"location": location,
 	"zip": parseFloat(data["zip"]),
 	"category" : category,
 	"description" : description,

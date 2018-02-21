@@ -22,7 +22,109 @@ GET <nom de votre index>/_count
 À vous de jouer ! Écrivez les requêtes ElasticSearch permettant de résoudre les problèmes posés.
 
 ```
-TODO : ajouter les requêtes ElasticSearch ici
+PUT call
+{
+  "mappings":
+  {
+    "call":
+    {
+      "properties":
+      {
+        "location":
+        {
+          "type": "geo_point"
+        }
+      }
+    }
+  }
+}
+
+GET call/_count
+
+GET call/call/_search
+{
+  "query":
+  {
+    "bool":
+    {
+      "must":
+      {
+        "match_all": {}
+      },
+      "filter":
+      {
+        "geo_distance":
+        {
+          "distance": "500m",
+          "location":
+          {
+            "lon": -75.283783,
+            "lat": 40.241493
+          }
+        }
+      }
+    }
+  }
+}
+
+GET call/call/_search
+{
+  "size": 0,
+  "aggs":
+  {
+    "category":
+    {
+      "terms":
+      {
+        "field": "category.keyword"
+      }
+    }
+  }
+}
+
+GET call/call/_search?size=0
+{
+  "aggs":
+  {
+    "by_month":
+    {
+      "date_histogram":
+      {
+        "field": "@timestamp",
+        "interval": "month",
+        "format": "MM/YYYY",
+        "order":
+        {
+          "_count": "desc"
+        }
+      }
+    }
+  }
+}
+
+GET call/call/_search
+{
+  "size": 0,
+  "query":
+  {
+    "match":
+    {
+      "description": "OVERDOSE"
+    }
+  },
+  "aggs":
+  {
+    "cities":
+    {
+      "terms":
+      {
+        "field": "quarter.keyword",
+        "size": 3
+      }
+    }
+  }
+}
+
 ```
 
 ## Kibana
